@@ -1,4 +1,3 @@
-;two-digit decimal to binary (fail)
 print macro str 
     mov ah, 09h 
     lea dx, str
@@ -9,7 +8,7 @@ print macro str
 .stack 100h
 .data 
     msg db "Enter the Decimal Number: $"
-    msg1 db 0dh, 0ah, "Binary Number is: $"
+    msg1 db 0dh, 0ah, "Hexadecimal Number is: $"
     numhold db 0
 
 .code 
