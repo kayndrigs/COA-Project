@@ -9,7 +9,7 @@ print macro str
 .stack 100h
 .data 
     msg db "Enter 2-digit Decimal Number: $"
-    msg1 db 0dh, 0ah, "Binary Number is: $"
+    msg1 db 0dh, 0ah, "Octal Number is: $"
     numhold db 0
 
 .code 
