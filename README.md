@@ -10,6 +10,6 @@ Set of programs needed:
 6. Binary to Decimal - done
 7. Decimal to Octal - done
 8. Octal to Decimal - done
-9. Decimal to Hexadecimal 
+9. Decimal to Hexadecimal - done
 10. Hexadecimal to Decimal
 
