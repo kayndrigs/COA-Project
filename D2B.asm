@@ -7,7 +7,7 @@ print macro str
 .model small
 .stack 100h
 .data 
-    msg db "Enter 2-digit Decimal Number: $"
+    msg db "Enter 8-bit Decimal Number (000-255): $"
     msg1 db 0dh, 0ah, "Binary Number is: $"
     numhold db 0
 
