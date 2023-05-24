@@ -1,4 +1,3 @@
-;two-digit decimal to binary (fail)
 print macro str 
     mov ah, 09h 
     lea dx, str
@@ -19,11 +18,22 @@ main proc
 
     print msg
 
-    mov cx, 2
-
+    mov cx, 3
+    
     loop1:
-        cmp cx, 1
+        cmp cx, 2
         je loop2 ; cx=2 false 
+        mov ah, 01h
+        int 21h
+        sub al, 48
+        mov cl, al 
+        mov al, cl 
+        mov bl, 100
+        mul bl ; ax
+        add numhold, al
+        loop loop2
+
+    loop2:
         mov ah, 01h
         int 21h
         sub al, 48
@@ -32,9 +42,9 @@ main proc
         mov bl, 10
         mul bl ; ax
         add numhold, al
-        loop loop2
+        loop loop3
 
-    loop2:
+    loop3:
         mov ah, 01h
         int 21h
         sub al, 48
