@@ -1,28 +1,47 @@
+printf macro str 
+    mov ah, 09h 
+    lea dx, str
+    int 21h
+    endm
+
 include emu8086.inc
 .model small
 .stack 100h
 .data
+    msg db "Enter 8-bit Binary Number: $"
+    msg1 db 0dh, 0ah, "Decimal Number is: $"
+    inv db 0dh, 0ah,"Invalid! Only put numbers 0-1. Try again.$"
+    numhold dw 0     
     wrn db "The binary exeeds 8bit register, try again!$"
+    lfcr db 0dh, 0ah, "$" 
 .code
 main proc 
     mov ax, @data
     mov ds, ax
     
+    mov cx, 8
+    
+    printf msg
     mov bx, 0
     mov ah, 1
-    for1:
+    input:
         int 21h
-        
+        cmp al, 31h
+        ja invalid
+        dec cx
+        cmp cx, 0
+        je end 
+    
     cmp al, 0dh
-    je end_for1
+    je end
     sub al, 30h
     shl bx,1
     or bl, al
-    jmp for1
+    jmp input
     
-    end_for1:
-    printn
-    printn
+    end:
+    printf msg1
+  
           
           
     cmp bl, 206
@@ -369,14 +388,15 @@ main proc
         int 21h
         jmp exit 
    
-   
+    invalid:
+        printf inv
+        jmp exit
         
     warning:
-        mov ah, 09h
-        mov dx, offset wrn
-        int 21h 
+        print lfcr
+        printf wrn
+        jmp exit
         
-
     
     exit:
     mov ah, 4ch
