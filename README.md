@@ -11,5 +11,5 @@ Set of programs needed:
 7. Decimal to Octal - done
 8. Octal to Decimal - done
 9. Decimal to Hexadecimal - done
-10. Hexadecimal to Decimal
+10. Hexadecimal to Decimal - done
 
