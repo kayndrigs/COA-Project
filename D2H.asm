@@ -7,9 +7,13 @@ print macro str
 .model small
 .stack 100h
 .data 
-    msg db "Enter the Decimal Number: $"
+    msg db "Enter the Decimal Number (000-255): $"
     msg1 db 0dh, 0ah, "Hexadecimal Number is: $"
-    numhold db 0
+    lfcr db 0dh, 0ah, "$"
+    inv db "Invalid entry! Only use numbers 0 to 9.$" 
+    ran db "Invalid entry! Only use numbers 000 to 255.$"
+    numhold db 0 
+    checker dw 0
 
 .code 
 main proc
@@ -18,28 +22,58 @@ main proc
 
     print msg
 
-    mov cx, 2
+    mov cx, 3
 
     loop1:
-        cmp cx, 1
+        cmp cx, 2
         je loop2 ; cx=2 false 
         mov ah, 01h
         int 21h
+        cmp al, 32h
+        ja invalid2
+        cmp al, 2Fh
+        jb invalid
+        cmp al, 39h
+        ja invalid
         sub al, 48
         mov cl, al 
         mov al, cl 
-        mov bl, 10
+        mov bl, 100
         mul bl ; ax
         add numhold, al
+        add checker, ax
         loop loop2
 
     loop2:
         mov ah, 01h
         int 21h
+        cmp al, 2Fh
+        jb invalid
+        cmp al, 39h
+        ja invalid
         sub al, 48
+        mov cl, al 
+        mov al, cl 
+        mov bl, 10
+        mul bl ; ax
         add numhold, al 
+        add checker, ax
+        loop loop3
 
-
+    loop3:
+        mov ah, 01h
+        int 21h
+        cmp al, 2Fh
+        jb invalid
+        cmp al, 39h
+        ja invalid
+        sub al, 48
+        add numhold, al
+        add checker, ax
+        push ax   
+        
+        
+    pop ax
     mov al, numhold
     mov ah, 0
     mov bx, 16
@@ -57,25 +91,50 @@ main proc
 
     print msg1 
 
-    pop dx          
+    pop dx 
+    ;0-9h first digit        
     disp:
-        cmp dx, 0009h
-        ja disp2
+        cmp dx, 9
+        ja disp1
         add dx, 48
         mov ah, 02h
         int 21h
         pop dx
-        loop disp
-        jmp exit
+        jmp disp2
+       
     
-    disp2:
-        cmp dx, 0009h
-        jbe disp
+    ;A-Fh 
+    disp1:
         add dx, 55
         mov ah, 02h
         int 21h
-        loop disp2
-        
+        pop dx
+        jmp disp2
+    
+    ;0-9 second digit
+    disp2:
+        cmp dx, 9
+        ja disp3
+        add dx, 48
+        mov ah, 02h
+        int 21h
+        jmp exit
+   
+    disp3:
+        add dx, 55
+        mov ah, 02h
+        int 21h
+        jmp exit
+    
+    invalid: 
+        print lfcr
+        print inv
+        jmp exit
+    
+    invalid2: 
+        print lfcr
+        print ran
+        jmp exit     
         
     exit:
     mov ah, 4ch
