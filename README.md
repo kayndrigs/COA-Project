@@ -2,7 +2,7 @@
 a repository for  asm uploads, documentations, etc.
 
 Set of programs needed: 
-1. Hexadecimal to Binary - done 1/2
+1. Hexadecimal to Binary - done 
 2. Binary to Hexadecimal - done 1/2
 3. Octal to Binary - done
 4. Binary to Octal - done
