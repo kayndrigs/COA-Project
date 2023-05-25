@@ -8,7 +8,7 @@ include emu8086.inc
 .model small
 .stack 100h
 .data
-    msg db "Enter 8-bit Binary Number: $"
+    msg db "Enter 8-bit Binary Number (Do not append any 0): $"
     msg1 db 0dh, 0ah, "Decimal Number is: $"
     inv db 0dh, 0ah,"Invalid! Only put numbers 0-1. Try again.$"
     numhold dw 0     
