@@ -8,7 +8,7 @@ include emu8086.inc
 .model small
 .stack 100h
 .data
-    msg db "Enter 8-bit Binary Number (Do not append any 0): $"
+    msg db "Enter 8-bit Binary Number (Do not append any 0 on the left!): $"
     msg1 db 0dh, 0ah, "Decimal Number is: $"
     inv db 0dh, 0ah,"Invalid! Only put numbers 0-1. Try again.$"
     numhold dw 0     
@@ -19,31 +19,24 @@ main proc
     mov ax, @data
     mov ds, ax
     
-    mov cx, 8
-    
     printf msg
+    
     mov bx, 0
     mov ah, 1
-    input:
+    for1:
         int 21h
-        cmp al, 31h
-        ja invalid
-        dec cx
-        cmp cx, 0
-        je end 
-    
+        
     cmp al, 0dh
-    je end
+    je end_for1
     sub al, 30h
     shl bx,1
     or bl, al
-    jmp input
+    jmp for1
     
-    end:
+    end_for1:
     printf msg1
-  
           
-          
+        
     cmp bl, 206
     ja dbl_dgt20
     
@@ -57,6 +50,7 @@ main proc
     jmp exit
     
    
+   ;adding decimal values
    dbl_dgt1:
         cmp bl, 67
         ja dbl_dgt2
@@ -67,8 +61,7 @@ main proc
         mov dl, bl
         int 21h
         jmp exit
-   
-   ;continue here     
+    
    dbl_dgt2:
         cmp bl, 77
         ja dbl_dgt3
@@ -388,15 +381,14 @@ main proc
         int 21h
         jmp exit 
    
-    invalid:
-        printf inv
-        jmp exit
+   
         
     warning:
-        print lfcr
-        printf wrn
-        jmp exit
+        mov ah, 09h
+        mov dx, offset wrn
+        int 21h 
         
+
     
     exit:
     mov ah, 4ch
